@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Assignment 4</title>
+  </head>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+  <body>
+    <div id="exercise">
+      <!-- 1) Start the Effect with the Button. The Effect should alternate the "highlight" or "shrink" class on each new setInterval tick (attach respective class to the div with id "effect" below) -->
+      <div>
+        <button @click="startEffect">Start Effect</button>
+        <div id="effect" :class="[changeColor?'highlight':'shrink']"></div>
+      </div>
+      <!-- 2) Create a couple of CSS classes and attach them via the array syntax -->
+      <div :style="[myStyle1,{height: height + 'px'},{fontStyle: fontstyle}]">
+        I got no class :(
+      </div>
+      <!-- 3) Let the user enter a class (create some example classes) and attach it -->
+      <br />
+      <div>
+        <input type="text" v-model="theclass" />
+        <div :class="theclass">this is sample text</div>
+      </div>
+      <!-- 4) Let the user enter a class and enter true/ false for another class (create some example classes) and attach the classes -->
+      <br />
+      <div>
+        <input type="text" v-model="differentclass" />
+        <!-- <input type="text" @keyup.enter="lastClass" /> -->
+        <input type="text" v-model="attachBox" />
+        <div :class="[differentclass , {box: attachBox}]">
+          This is a class
+        </div>
+      </div>
+      <!-- 5) Repeat 3) but now with values for styles (instead of class names). Attach the respective styles.  -->
+      <br />
+      <div>
+        <input type="text" v-model="lastclass" />
+        <div :style="{backgroundColor: lastclass}">
+          one of the last exercises
+        </div>
+      </div>
+      <!-- 6) Create a simple progress bar with setInterval and style bindings. Start it by hitting the below button. -->
+      <br>
+      <div>
+        <button @click="startProgress">Start Progress</button>
+        <div
+          class="progressBar"
+          :style="{'width': progress  + '%' , 'opacity': opacityValue }"
+        ></div>
+      </div>
+    </div>
+  </body>
+  <!-- <style src='styles.css'></style> -->
+  <script>
+    new Vue({
+      el: "#exercise",
+      data: {
+        changeColor: false,
+        oneclass: "blueviolet",
+        height: 100,
+        fontstyle: "italic",
+        theclass: "oneclass",
+        differentclass: "oneclass",
+        trueOrFalse: "",
+        attachBox: "",
+        lastclass: "",
+        progress: 0
+      },
+      methods: {
+        startEffect: function() {
+          setInterval(
+            function() {
+              this.changeColor = !this.changeColor;
+            }.bind(this),
+            2000
+          );
+
+          //alert(this.changeColor);
+        },
+        startProgress: function() {
+          vm = this;
+          setInterval(function() {
+            if (vm.progress >= 100) {
+              vm.progress = 0;
+              return;
+            }
+            vm.progress++;
+          }, 100);
+        }
+      },
+      computed: {
+        myStyle1: function() {
+          return {
+            backgroundColor: this.oneclass
+          };
+        },
+        opacityValue: function() {
+          return this.progress / 20;
+        },
+
+        myClass: function() {
+          return {
+            highlight: this.changeColor,
+            shrink: !this.changeColor
+          };
+        }
+      }
+    });
+  </script>
+</html>
